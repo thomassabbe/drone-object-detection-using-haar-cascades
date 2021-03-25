@@ -62,6 +62,7 @@ def response_of_neighbors |	#Name: Returns the amount votes of each neighbor aro
 def k_nearest_neighbors | #Name: Returns the k-amount nearest neighbors (and their distance) around the color value of the test-image. If k is set to '3', three possible clusters that are close to the value of the test-image will be returned, in an array.
 def calculate_euclideandistance | #Name: Used by 'k_nearest_neighbors' to determine the nearest distance between two positions (pixel-coördinates).
 */* parameters
+
 Parameter name | Context
 ------------ | -------------
 source_image | #Source: image needed for color_controller definition. This is the only parameter of the whole 'color detection'-section.
@@ -90,6 +91,7 @@ def addtolist |	#Name: Defintion to add a variable to a list.
 def calculate_radialdistance_theta | #Name: Calculate euclidian distane and theta, given a safezone and distance between camera and object.
 def visual_algorithm |		#Name: Main definition of the object-detection script. Main goal is to return the return variables from 	'calculate_radialdistance_theta'.
 */* parameters
+
 Parameter name | Context
 ------------ | -------------
 safezonesize |	=> #ONLY FOR DEBUGGING USE: Default 50, but change this if debugging is enabled.This will print a rectangle on the screen as an indication if the cross-object would be above the drone.
@@ -118,6 +120,7 @@ Definition name | Context
 ------------ | -------------
 def create_transformation | # Name: Main and only definition to create a series of augmented images.
 */* parameters
+
 Parameter name | Context
 ------------ | -------------
 path_to_importfolder| => #Folder with images that need to be augmented 
@@ -143,6 +146,7 @@ def test_accuracy |	# Name: For each image in the 'sample_images'-folder, it let
 "" | #Case: If no object is found, the image will be written in the 'export_images' folder as "IMGNAME+NO-OBJECT".
 "" | #Case:  If there is an object, the image will be written in in the 'export_images' folder as "IMGNAME", with the bounding box on the detected object printed on the same image. Also, a "IMGNAME+CUT" image will be written. This is a cut image of only the area that the bounding box covers.
 */* parameters
+
 Parameter name | Context
 ------------ | -------------
 sample_images | Images that need to be examined by the cascade-model or the color-clustering algorithm
