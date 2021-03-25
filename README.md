@@ -35,10 +35,10 @@ For cascade and color accuracy | Nothing yet
 		There's NO need to open the 'VisualDetectionLibrary'. Every parameter necessary is stated in the 'main' script.
 5. Check your results in the folders (if applicable) or read your outputs in the console (if applicable).
 			Have fun!
-
+&nbsp;
 # Further (optional) detailed behaviour about content of library.py:
 
-### 1. Color Detection
+## 1. Color Detection
 
 ##### Uses following libraries:
 
@@ -73,9 +73,8 @@ source_image | #Source: image needed for color_controller definition. This is th
 * `<color_controller(image.png)>` 		#image.png : the image where the color needs to be determined.
 ##### Debug options
 * There is an option to enable text output to display if the .data-files need to be generated or not.
-		
- 
-### 2. Drone Vision 
+ &nbsp;
+## 2. Drone Vision 
 
     # MAKE SURE YOU HAVE ONLY ONE VIDEO CAPTURE DEVICE CONNECTED.
 ##### Uses following libraries:
@@ -109,8 +108,8 @@ _DISCLAIMER!_ If no object has been found in the 2 second period, the definition
 ##### Debug options
 * There is an option to enable text output in the runtime box and to display a live-view image of where the object is (the bounding box of the object), for every 'scantime' seconds.
  
- 
-### 3. Data augmentation
+ &nbsp;
+## 3. Data augmentation
 
 ##### Uses following libraries:
 * `<import numpy as npe>`
@@ -137,8 +136,9 @@ repeat_variable | => #How many times the same image needs to be augmented. For e
 * No debug options provided
 ##### Example to call function:
 * `<create_transformation(G:\PyCharmProjects\sample_images, G:\PyCharmProjects\augmented_images, 0, 10))>`
-
-### 4. & 5.: Accuracy of haar-cascade model and color detection.
+&nbsp;
+## 4. & 5.: Accuracy of haar-cascade model and color detection.
+&nbsp;
  	NOTICE THAT THE RESULTS WILL BE STORED TO "../data/accuracy_results.txt"! This cannot be changed from the main method
 ##### Uses following libraries:
 * `<import cv2>`
