@@ -1,9 +1,11 @@
- drone-object-detection-using-haar-cascades
+ _drone-object-detection-using-haar-cascades_
  -*- coding: utf-8 -*-
  -------------------------------------------------------------------------
- --- Author         : Thomas Sabbe
- --- Mail           : thomas.sabbe@student.kuleuven.be
- --- Date           : 25/03/2021
+Variable | Content
+------------ | -------------
+Author | Thomas Sabbe
+Mail | thomas.sabbe@student.kuleuven.be
+Date | 25/03/2021
  -------------------------------------------------------------------------
 Welcome to the repository of object detection using haar cascades.
 
@@ -61,6 +63,7 @@ def load_dataset |	#Name: Converts the test.data and training.data files to .csv
 def response_of_neighbors |	#Name: Returns the amount votes of each neighbor around the color, presented in the test-image. This definition is called by 'knn_classifiermain', but uses argument 'neighbors' from 'k_nearest_neighbors' (in order to count the nearest neighbors, ofcourse...)
 def k_nearest_neighbors | #Name: Returns the k-amount nearest neighbors (and their distance) around the color value of the test-image. If k is set to '3', three possible clusters that are close to the value of the test-image will be returned, in an array.
 def calculate_euclideandistance | #Name: Used by 'k_nearest_neighbors' to determine the nearest distance between two positions (pixel-coördinates).
+
 */* parameters
 
 Parameter name | Context
@@ -90,6 +93,7 @@ def average	| #Name: Determines the average of a list.
 def addtolist |	#Name: Defintion to add a variable to a list.
 def calculate_radialdistance_theta | #Name: Calculate euclidian distane and theta, given a safezone and distance between camera and object.
 def visual_algorithm |		#Name: Main definition of the object-detection script. Main goal is to return the return variables from 	'calculate_radialdistance_theta'.
+
 */* parameters
 
 Parameter name | Context
@@ -119,6 +123,7 @@ _DISCLAIMER!_ If no object has been found in the 2 second period, the definition
 Definition name | Context
 ------------ | -------------
 def create_transformation | # Name: Main and only definition to create a series of augmented images.
+
 */* parameters
 
 Parameter name | Context
@@ -145,6 +150,7 @@ def calculate_imagecount |	# Name: Counts the amount of images inside the 'sampl
 def test_accuracy |	# Name: For each image in the 'sample_images'-folder, it lets the cascade determine an object (if there is an object present). Then, it determines the color of the object and prints it on an image in the 'export_images' folder.
 "" | #Case: If no object is found, the image will be written in the 'export_images' folder as "IMGNAME+NO-OBJECT".
 "" | #Case:  If there is an object, the image will be written in in the 'export_images' folder as "IMGNAME", with the bounding box on the detected object printed on the same image. Also, a "IMGNAME+CUT" image will be written. This is a cut image of only the area that the bounding box covers.
+
 */* parameters
 
 Parameter name | Context
