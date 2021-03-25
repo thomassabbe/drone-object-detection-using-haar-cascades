@@ -74,6 +74,7 @@ source_image | #Source: image needed for color_controller definition. This is th
 ##### Debug options
 * There is an option to enable text output to display if the .data-files need to be generated or not.
  &nbsp;
+ &nbsp;
 ## 2. Drone Vision 
 
     # MAKE SURE YOU HAVE ONLY ONE VIDEO CAPTURE DEVICE CONNECTED.
@@ -137,6 +138,8 @@ repeat_variable | => #How many times the same image needs to be augmented. For e
 ##### Example to call function:
 * `<create_transformation(G:\PyCharmProjects\sample_images, G:\PyCharmProjects\augmented_images, 0, 10))>`
 &nbsp;
+&nbsp;
+
 ## 4. & 5.: Accuracy of haar-cascade model and color detection.
 &nbsp;
  	NOTICE THAT THE RESULTS WILL BE STORED TO "../data/accuracy_results.txt"! This cannot be changed from the main method
