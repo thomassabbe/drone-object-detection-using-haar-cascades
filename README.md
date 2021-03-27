@@ -10,6 +10,7 @@ Date | 25/03/2021
 Welcome to the repository of object detection using haar cascades.
 
 Disclaimer: some of the functions inside this repo have options to debug. This contains text output and/or visual output.
+If you wish to see a practical tutorial, please visit [this link](https://youtu.be/hTDW3sl2i6g)
 
 # Content of this repository, in correct order of the library.py script:
   1. Color detection: Determine the color of an object using 
