@@ -26,7 +26,7 @@ Disclaimer: some of the functions inside this repo have options to debug. This c
 
 Type of function | Data needed
 ------------ | -------------
-For object detection | cascade.xml: '../src/cascade/cascade.xml', see [how to train cascade](t-zone.be)
+For object detection | cascade.xml: '../src/cascade/cascade.xml', see [how to train cascade](https://github.com/thomassabbe/drone-object-detection-using-haar-cascades/wiki/Haar-cascade-training)
 For color detection | %color%.png: '../data/training_dataset/%color%.png' (for each color)
 For data-augmentation | sample_images: Folder with images of desired object, to be augmented (is an argument so choice is arbitrary where the folder is located)
 For cascade and color accuracy | Nothing yet
