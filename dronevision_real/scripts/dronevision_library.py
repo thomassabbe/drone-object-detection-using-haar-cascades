@@ -512,16 +512,18 @@ def test_accuracy(sample_images, export_images, boolcolor):
                     color = str(color_controller(img_cut, False))
                 if active == False:
                     filename_drawn = img
+                    r, g, b = color_switch(color)
+                    color_bgr = b, g, r
                     cv2.rectangle(filename_drawn, (x, y), (x + w, y + h),
-                                  (255, 192, 203), 2)
+                                  (color_bgr), 2)
                     if boolcolor == True:
                         cv2.putText(
                             filename_drawn,
                             'Prediction: ' + color,
-                            (15, 45),
-                            cv2.FONT_HERSHEY_PLAIN,
-                            3,
-                            200,
+                            (int(200), 60),
+                            cv2.FONT_HERSHEY_PLAIN, 1, (color_bgr),
+                            1,
+                            cv2.LINE_AA,
                         )
                     cv2.imwrite(export_images + str(filename) + '.jpg', filename_drawn)
                     image_list_succesful_color.append(filename)
@@ -534,16 +536,18 @@ def test_accuracy(sample_images, export_images, boolcolor):
                             image_list_succesful_color.append(filename)
                             f.write("Added Picture with cross & color\r\n")
                             filename_drawn = img
+                            r, g, b = color_switch(color)
+                            color_bgr = b, g, r
                             cv2.rectangle(filename_drawn, (x, y), (x + w, y + h),
-                                          (255, 192, 203), 2)
+                                          (color_bgr), 2)
                             if boolcolor == True:
                                 cv2.putText(
                                     filename_drawn,
                                     'Prediction: ' + color,
-                                    (15, 45),
-                                    cv2.FONT_HERSHEY_PLAIN,
-                                    3,
-                                    200,
+                                    (int(200), 60),
+                                    cv2.FONT_HERSHEY_PLAIN, 5, (color_bgr),
+                                    1,
+                                    cv2.LINE_AA,
                                 )
                             cv2.imwrite(export_images + str(filename) + '.jpg', filename_drawn)
                             count = count + 1
