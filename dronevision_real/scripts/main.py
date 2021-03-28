@@ -1,4 +1,4 @@
-# Import only Library of VisualDetection
+# Import only Library of dronevision_library
 import cv2
 from dronevision_library import test_accuracy
 from dronevision_library import color_controller
