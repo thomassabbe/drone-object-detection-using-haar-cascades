@@ -6,7 +6,7 @@ Please provide your own cascade model if you want to detect other objects.
 cascade_7stages: Works best for detecting crosses. 
 cascade_8stages: Harder to detect model, but less false detections of crosses!
 ---
-Please drag the files inside one of the two cascade-folders into this 'cascade' folder to use the function!
+Please drag the .xml file inside one of the two cascade-folders into this 'cascade' folder to use the function!
 
 Properties of 7-stage model:
 *Training time: 4days 7hours
