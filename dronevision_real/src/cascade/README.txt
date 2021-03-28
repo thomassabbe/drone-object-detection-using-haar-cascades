@@ -10,6 +10,6 @@ Please drag the files inside one of the two cascade-folders into this 'cascade' 
 
 Properties of 7-stage model:
 *Training time: 4days 7hours
-*Accuracy: %
-*Precision: %
-*Recall: %
+*Accuracy: 90%
+*Precision: 100%
+*Recall: 80%
