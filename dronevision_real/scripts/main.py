@@ -34,16 +34,16 @@ if object_detection_active:
 if accuracy_test_active:
     #Note that the result.txt file will be stored in the root folder of your project.
     # Please adjust these parameters before running the script:
-    sample_images = '../data/sample_images/' #"PATH_TO_SAMPLE-IMAGES_FOLDER"  # Should be in following syntax: '../ANY_FOLDER_IN_ROOT_OF_PROJECT/sample_images/'
-    export_images = '../data/export_images/' #"PATH_TO_EXPORT-IMAGES_FOLDER"  # Should be in following syntax: '../ANY_FOLDER_IN_ROOT_OF_PROJECT/export_images/'
-    boolcolor = True  # If set to True, the color of the detected object (if applicable) will be printed on the image.
+    sample_images = "PATH_TO_SAMPLE-IMAGES_FOLDER"  # Should be in following syntax: '../ANY_FOLDER_IN_ROOT_OF_PROJECT/sample_images/'
+    export_images = "PATH_TO_EXPORT-IMAGES_FOLDER"  # Should be in following syntax: '../ANY_FOLDER_IN_ROOT_OF_PROJECT/export_images/'
+    boolcolor = False  # If set to True, the color of the detected object (if applicable) will be printed on the image.
     test_accuracy(sample_images, export_images, boolcolor)
 
 # /* color_detection(): */
 if color_detection_active:
     # Please adjust these parameters before running the script:
-    source_image_path = "../data/training_dataset/blue/blue2.jpg" #"PATH_TO_IMAGE"  # Fill in the path to the file where your image is stored. Syntax: '../ANYFOLDER/%IMAGE%.png' !!Case sensitive!!
-    debugparam = True  # This will enable debugging output, such as text in the runtime environment.
+    source_image_path = "PATH_TO_IMAGE"  # Fill in the path to the file where your image is stored. Syntax: '../ANYFOLDER/%IMAGE%.png' !!Case sensitive!!
+    debugparam = False  # This will enable debugging output, such as text in the runtime environment.
     # Debugging outputs (text) of color will be enabled by default.
     source_image = cv2.imread(source_image_path)
     color = color_controller(source_image, debugparam)
@@ -52,9 +52,9 @@ if color_detection_active:
 # /* data_augmentation(): */
 if data_augmentation_active:
     # Please adjust these parameters before running the script:
-    path_to_importfolder = 'G:/Programmeren_Bachelorproef/dronevision_real (github)/data/sample_images/' #'PATH_TO_IMPORTFOLDER'  # Folder with images that need to be augmented,
+    path_to_importfolder = 'PATH_TO_IMPORTFOLDER'  # Folder with images that need to be augmented,
     # format like: 'drive_letter:/folder/folder/' (don't forget '/' at the end)
-    path_to_exportfolder = 'G:/Programmeren_Bachelorproef/dronevision_real (github)/data/export_images/' #'PATH_TO_EXPORTFOLDER'  # Folder where augmented images should be stored,
+    path_to_exportfolder = 'PATH_TO_EXPORTFOLDER'  # Folder where augmented images should be stored,
     # format like: 'drive_letter:/folder/folder/' (don't forget '/' at the end)
     start_number = 0  # Starting number for image output. Change to something else than 0 if you would perform Data Augmentation multiple times in the same folder.
     repeat_variable = 2  # How many times the same image needs to be augmented.
