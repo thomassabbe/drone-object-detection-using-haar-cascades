@@ -367,9 +367,9 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
                     pass
                 color = str(color_controller(img_cut, False))
                 if debug:
-                    cv2.rectangle(img, (x, y), (x + w, y + h), (color_switch(color)), 5)
                     r, g, b = color_switch(color)
                     color_bgr = b, g, r
+                    cv2.rectangle(img, (x, y), (x + w, y + h), (color_bgr), 5)
                     cv2.putText(img, 'Color: ' + color, (int(x), int(y)), cv2.FONT_HERSHEY_PLAIN, 2, (color_bgr), 1, cv2.LINE_AA)
                     cv2.imshow('img', img)
                 if color == desiredcolor:
