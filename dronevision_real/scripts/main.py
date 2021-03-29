@@ -20,12 +20,14 @@ data_augmentation_active = True  # Enables functions belonging to the data augme
 # /* object_detection(): */
 if object_detection_active:
     # Please adjust these parameters before running the script:
-    scantime = 3  # Time that the function will scan before returning an output.
+    scantime = 0  # Time that the function will scan before returning an output.
     safezonesize = 0  # DEBUG PARAMETER! Will not be used if you do not wish to debug.
-    desiredcolor = "white"  # Color of object that should be detected. For example "white". Visit README.md for available options.
+    desiredcolor = "%COLOR%"  # Color of object that should be detected. For example "white". Visit README.md for available options.
     debug = False  # This will enable debugging output, such as text in the runtime environment.
-    # Attention! Debugging will enable a infinite loop of output, and no variables will be returned!
-    radialdistance, theta = visual_algorithm(scantime, safezonesize, desiredcolor, debug)
+    videosource = ''  # Determine the video source (video-file). If no input, or the video file could not be opened, camera capture will initialize.
+    # Syntax for videosource: '../folder/videosource.avi'
+    # Attention! Debugging will enable a infinite loop of output, and no variables will be returned! (or until the video is finished)
+    radialdistance, theta = visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource)
     print(radialdistance, theta)  # Remove this if you don't want the output to be displayed (non-debug mode)
 
 # /* accuracy_test(): */
