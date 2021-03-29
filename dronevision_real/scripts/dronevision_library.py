@@ -338,14 +338,15 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
             # Read the capture initialised above.
             ret, img = cap.read()
             # apply medianBlur.
-            blur = cv2.medianBlur(img, 3)
+            blur = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            #cv2.medianBlur(img, 3)
             # Get window width and height of image frame.
             window_width = cv2.getWindowImageRect("img")[2]
             window_height = cv2.getWindowImageRect("img")[3]
             # Detect object, 'crosses'.
             crosses = cross_cascade.detectMultiScale(blur, 100, 100)
             if debug:
-                cv2.imshow('img', blur)
+                cv2.imshow('img', img)
                 cv2.circle(img, (int(window_width / 2), int(window_height / 2)), int((safezone / 2)), (255, 0, 255), 2)
 
             # For loop: 'for every cross being detected, do...'
@@ -354,7 +355,7 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
                 center_x = x + (w / 2)
                 center_y = y + (h / 2)
                 # Cut the existing image to get a piece of the color of the cross.
-                img_cut = blur[int(center_y - w): int(w + center_y),
+                img_cut = img[int(center_y - w): int(w + center_y),
                           int(center_x - w):int(
                               w + center_x)]
 
