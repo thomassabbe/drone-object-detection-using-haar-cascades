@@ -43,7 +43,7 @@ For cascade and color accuracy | N.A.
 
 ##### Uses following libraries:
 
-* `<import csv>
+* `<import csv>`
 `<import operator>`
 `<import os>`
 
