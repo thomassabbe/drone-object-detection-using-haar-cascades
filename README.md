@@ -65,7 +65,7 @@ def response_of_neighbors | _Name_: Returns the amount votes of each neighbor ar
 def k_nearest_neighbors | _Name_: Returns the k-amount nearest neighbors (and their distance) around the color value of the test-image. If k is set to '3', three possible clusters that are close to the value of the test-image will be returned, in an array.
 def calculate_euclideandistance | _Name_: Used by 'k_nearest_neighbors' to determine the nearest distance between two positions (pixel-coördinates).
 
-*/* parameters
+*/* parameters necessary to use function
 
 Parameter name | Context
 ------------ | -------------
@@ -92,10 +92,11 @@ Definition name | Context
 ------------ | -------------
 def average	| _Name_: Determines the average of a list.
 def addtolist |	_Name_: Defintion to add a variable to a list.
+def color_switch | _Name_: Switches a color (str format) to RGB values (syntax: int, int, int)
 def calculate_radialdistance_theta | _Name_: Calculate euclidian distane and theta, given a safezone and distance between camera and object.
-def visual_algorithm | _Name_: Main definition of the object-detection script. Main goal is to return the return variables from 	'calculate_radialdistance_theta'.
+def visual_algorithm | _Name_: Main definition of the object-detection script. Main goal is to return the return variables from 'calculate_radialdistance_theta'.
 
-*/* parameters
+*/* parameters necessary to use function
 
 Parameter name | Context
 ------------ | -------------
@@ -125,12 +126,12 @@ Definition name | Context
 ------------ | -------------
 def create_transformation | _Name_: Main and only definition to create a series of augmented images.
 
-*/* parameters
+*/* parameters necessary to use function
 
 Parameter name | Context
 ------------ | -------------
-path_to_importfolder| Folder with images that need to be augmented 
-path_to_exportfolder | Folder where augmented images should be stored
+path_to_importfolder| Folder with images that need to be augmented. 
+path_to_exportfolder | Folder where augmented images should be stored.
 start_number | Starting number for image output. Change to something else than 0 if you would perform Data Augmentation multiple times in the same folder.
 repeat_variable | How many times the same image needs to be augmented. For ex.: 101 sample pictures will result into 2020 pictures, if repeat_variable is  set to 20.
 	Attention: no return variable(s) exist for this function!
@@ -153,7 +154,7 @@ def test_accuracy | _Name_: For each image in the 'sample_images'-folder, it let
 "" | _Case_: If no object is found, the image will be written in the 'export_images' folder as "IMGNAME+NO-OBJECT".
 "" | _Case_:  If there is an object, the image will be written in in the 'export_images' folder as "IMGNAME", with the bounding box on the detected object printed on the same image. Also, a "IMGNAME+CUT" image will be written. This is a cut image of only the area that the bounding box covers.
 
-*/* parameters
+*/* parameters necessary to use function
 
 Parameter name | Context
 ------------ | -------------
