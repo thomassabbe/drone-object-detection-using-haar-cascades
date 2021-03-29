@@ -30,7 +30,7 @@ Type of function | Data needed
 For object detection | cascade.xml: '../src/cascade/cascade.xml', see [how to train cascade](https://github.com/thomassabbe/drone-object-detection-using-haar-cascades/wiki/Haar-cascade-training)
 For color detection | %color%.png: '../data/training_dataset/%color%.png' (for each color)
 For data-augmentation | sample_images: Folder with images of desired object, to be augmented (is an argument so choice is arbitrary where the folder is located)
-For cascade and color accuracy | Nothing yet
+For cascade and color accuracy | N.A.
 
 4. In the main script, call any desired method. Read the required parameters and explanation and run the script.
 		There's NO need to open the 'VisualDetectionLibrary'. Every parameter necessary is stated in the 'main' script.
