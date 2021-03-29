@@ -12,7 +12,7 @@ Welcome to the repository of object detection using haar cascades.
 Disclaimer: some of the functions inside this repo have options to debug. This contains text output and/or visual output.
 If you wish to see a practical tutorial, please visit [this link](https://youtu.be/_pKXK4r-oxs)
 
-# Content of this repository, in correct order of the library.py script:
+# Content of this repository, in correct order of dronevision_library.py:
   1. Color detection: Determine the color of an object using 
   2. Drone Vision: Given two parameters (scantime and desired color), return a pixel-distance between drone and object, which has been detected with a cascade model. 
   3. Data augmentation: Augment positive images (images with desired object) to create a larger dataset.
