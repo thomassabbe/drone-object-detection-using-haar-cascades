@@ -37,7 +37,7 @@ For cascade and color accuracy | N.A.
 5. Check your results in the folders (if applicable) or read your outputs in the console (if applicable).
 			Have fun!
 &nbsp;
-# Further (optional) detailed behaviour about content of library.py:
+# Further (optional) detailed behaviour about content of dronevision_library.py:
 
 ## 1. Color Detection
 
