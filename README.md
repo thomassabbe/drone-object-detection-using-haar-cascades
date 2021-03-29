@@ -9,7 +9,7 @@ Date | 25/03/2021
  -------------------------------------------------------------------------
 Welcome to the repository of object detection using haar cascades.
 
-Disclaimer: some of the functions inside this repo have options to debug. This contains text output and/or visual output.
+Disclaimer: some of the functions inside this repo have options to debug. This contains text output and/or visual output. This is not implemented in this README-file, but can be found when opening 'main.py'.
 If you wish to see a practical tutorial, please visit [this link](https://youtu.be/_pKXK4r-oxs)
 
 # Content of this repository, in correct order of dronevision_library.py:
@@ -103,10 +103,12 @@ Parameter name | Context
 safezonesize | ONLY FOR DEBUGGING USE: Default 50, but change this if debugging is enabled.This will print a rectangle on the screen as an indication if the cross-object would be above the drone.
 scantime | The time to scan for cross objects before def 'visual_algorithm' returns a radialdistance and direction theta.
 desiredcolor | The color of the object you want to detect. For example; red, because your cross-object should be red and not blue.
+videosource | Parameter to import a video file instead of webcam live-feed. If empty or not found (video file), it will use webcam.
 
 ##### Example to determine the position of an object, with respect to the center of the camera frame:
-* `<visual_algorithm(2,50,"white")>`				
-Will scan 2 seconds for a white cross and return the radial distance to that object, in case it has been found.
+* `<visual_algorithm(2, 50, "white", '../folder/videosource.avi')>`				
+This request will make the function scan 2 seconds for a white cross (in videosource.avi) and return the radial distance to that object, in case it has been found.
+If debug has been enabled, then, every two seconds, a white bounding box should appear on the screen output.
 _DISCLAIMER!_ If no object has been found in the 2 second period, the definition will not stop until an object has been found.
 ##### Debug options
 * There is an option to enable text output in the runtime box and to display a live-view image of where the object is (the bounding box of the object), for every 'scantime' seconds.
