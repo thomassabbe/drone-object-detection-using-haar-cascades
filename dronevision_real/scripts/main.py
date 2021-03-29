@@ -10,7 +10,7 @@ from dronevision_library import create_transformation
 object_detection_active = False  # Enables functions belonging to the object detection.
 accuracy_test_active = False  # Enables functions belonging to the accuracy testing (of object and color).
 color_detection_active = False  # Enables functions belonging to the color detection.
-data_augmentation_active = True  # Enables functions belonging to the data augmentation.
+data_augmentation_active = False  # Enables functions belonging to the data augmentation.
 
 ##################################################################
 # SAMPLE DEFINITIONS, TO CALL THE FUNCTIONS IN THE LIBRARY, BELOW#
