@@ -16,7 +16,7 @@ If you wish to see a practical tutorial, please visit [this link](https://youtu.
   1. Color detection: Determine the color of an object using 
   2. Drone Vision: Given two parameters (scantime and desired color), return a pixel-distance between drone and object, which has been detected with a cascade model. 
   3. Data augmentation: Augment positive images (images with desired object) to create a larger dataset.
-  4. Test accuracy of a haar-cascade model (generated with OpenCV 'train cascade'; see documentation of that) 
+  4. Test accuracy of a haar-cascade model (generated with OpenCV 'train cascade'; see [documentation](https://github.com/thomassabbe/drone-object-detection-using-haar-cascades/wiki/Haar-cascade-training)) 
   5. Test accuracy of color detection, using KNN Nearest Neighbours and Kmeans clustering: Detect color of an object, and print this on an image. 
  
 # How do I install and run the repository?
