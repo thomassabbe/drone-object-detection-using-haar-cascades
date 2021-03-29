@@ -78,7 +78,7 @@ source_image | _Source_: image needed for color_controller definition. This is t
  &nbsp;
 ## 2. Drone Vision 
 
-    # MAKE SURE YOU HAVE ONLY ONE VIDEO CAPTURE DEVICE CONNECTED.
+    MAKE SURE YOU HAVE ONLY ONE VIDEO CAPTURE DEVICE CONNECTED.
 ##### Uses following libraries:
 * `<import datetime>`
 `<import os>`
