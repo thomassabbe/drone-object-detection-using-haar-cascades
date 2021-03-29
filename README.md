@@ -51,25 +51,25 @@ For cascade and color accuracy | N.A.
 */* definitions
 Definition name | Context
 ------------ | -------------
-def color_controller(source_image)	|  #Name: Main definition that returns color based upon child definitions below.
-"" | #File usage: Creates these files if it doesn't exist yet: ../src/training.data & ../src/test.data
-def training |	#Name: For every training-image, 'color_histogram_of_training_image' is called to create a histogram for the colors.
-"" | #Folder usage:	requires following folder: ../data/training_dataset/%color% (with color images)						
-def color_histogram_of_training_image |	#Name:Creates a .data file that contains color-cluster data. This definition is called by 'training'.
-"" | #File usage: Creates these files if it doesn't exist yet: ../src/training.data
-def color_histogram_of_test_image |	#Name: Creates a .data file that contains color-cluster data. This color data is extracted from a test image that is presented to the training.data model/file.
-"" | #File usage: Creates these files if it doesn't exist yet: ../src/test.data
-def knn_classifiermain | #Name: Main definition for returning a prediction of the model to 'color_controller'. Uses both test.data and training.data files created in the definitions above, if they didn't exist yet.
-def load_dataset |	#Name: Converts the test.data and training.data files to .csv vector files, in order to create training feature vectors and a test feature vector.
-def response_of_neighbors |	#Name: Returns the amount votes of each neighbor around the color, presented in the test-image. This definition is called by 'knn_classifiermain', but uses argument 'neighbors' from 'k_nearest_neighbors' (in order to count the nearest neighbors, ofcourse...)
-def k_nearest_neighbors | #Name: Returns the k-amount nearest neighbors (and their distance) around the color value of the test-image. If k is set to '3', three possible clusters that are close to the value of the test-image will be returned, in an array.
-def calculate_euclideandistance | #Name: Used by 'k_nearest_neighbors' to determine the nearest distance between two positions (pixel-coördinates).
+def color_controller(source_image)	| Name: Main definition that returns color based upon child definitions below.
+"" | File usage: Creates these files if it doesn't exist yet: ../src/training.data & ../src/test.data
+def training |	Name: For every training-image, 'color_histogram_of_training_image' is called to create a histogram for the colors.
+"" | Folder usage:	requires following folder: ../data/training_dataset/%color% (with color images)						
+def color_histogram_of_training_image |	Name:Creates a .data file that contains color-cluster data. This definition is called by 'training'.
+"" | File usage: Creates these files if it doesn't exist yet: ../src/training.data
+def color_histogram_of_test_image | Name: Creates a .data file that contains color-cluster data. This color data is extracted from a test image that is presented to the training.data model/file.
+"" | File usage: Creates these files if it doesn't exist yet: ../src/test.data
+def knn_classifiermain | Name: Main definition for returning a prediction of the model to 'color_controller'. Uses both test.data and training.data files created in the definitions above, if they didn't exist yet.
+def load_dataset | Name: Converts the test.data and training.data files to .csv vector files, in order to create training feature vectors and a test feature vector.
+def response_of_neighbors | Name: Returns the amount votes of each neighbor around the color, presented in the test-image. This definition is called by 'knn_classifiermain', but uses argument 'neighbors' from 'k_nearest_neighbors' (in order to count the nearest neighbors, ofcourse...)
+def k_nearest_neighbors | Name: Returns the k-amount nearest neighbors (and their distance) around the color value of the test-image. If k is set to '3', three possible clusters that are close to the value of the test-image will be returned, in an array.
+def calculate_euclideandistance | Name: Used by 'k_nearest_neighbors' to determine the nearest distance between two positions (pixel-coördinates).
 
 */* parameters
 
 Parameter name | Context
 ------------ | -------------
-source_image | #Source: image needed for color_controller definition. This is the only parameter of the whole 'color detection'-section.
+source_image | Source: image needed for color_controller definition. This is the only parameter of the whole 'color detection'-section.
 ##### Example to determine the color of an image of an object, as displayed in main.py:
 * `<color_controller(image.png)>` 		#image.png : the image where the color needs to be determined.
 ##### Debug options
@@ -90,18 +90,18 @@ source_image | #Source: image needed for color_controller definition. This is th
 */* definitions
 Definition name | Context
 ------------ | -------------
-def average	| #Name: Determines the average of a list.
-def addtolist |	#Name: Defintion to add a variable to a list.
-def calculate_radialdistance_theta | #Name: Calculate euclidian distane and theta, given a safezone and distance between camera and object.
-def visual_algorithm |		#Name: Main definition of the object-detection script. Main goal is to return the return variables from 	'calculate_radialdistance_theta'.
+def average	| Name: Determines the average of a list.
+def addtolist |	Name: Defintion to add a variable to a list.
+def calculate_radialdistance_theta | Name: Calculate euclidian distane and theta, given a safezone and distance between camera and object.
+def visual_algorithm | Name: Main definition of the object-detection script. Main goal is to return the return variables from 	'calculate_radialdistance_theta'.
 
 */* parameters
 
 Parameter name | Context
 ------------ | -------------
-safezonesize |	=> #ONLY FOR DEBUGGING USE: Default 50, but change this if debugging is enabled.This will print a rectangle on the screen as an indication if the cross-object would be above the drone.
-scantime | => #The time to scan for cross objects before def 'visual_algorithm' returns a radialdistance and direction theta.
-desiredcolor |	=> #The color of the object you want to detect. For example; red, because your cross-object should be red and not blue.
+safezonesize | ONLY FOR DEBUGGING USE: Default 50, but change this if debugging is enabled.This will print a rectangle on the screen as an indication if the cross-object would be above the drone.
+scantime | The time to scan for cross objects before def 'visual_algorithm' returns a radialdistance and direction theta.
+desiredcolor | The color of the object you want to detect. For example; red, because your cross-object should be red and not blue.
 
 ##### Example to determine the position of an object, with respect to the center of the camera frame:
 * `<visual_algorithm(2,50,"white")>`				
@@ -123,16 +123,16 @@ _DISCLAIMER!_ If no object has been found in the 2 second period, the definition
 */* definitions
 Definition name | Context
 ------------ | -------------
-def create_transformation | # Name: Main and only definition to create a series of augmented images.
+def create_transformation | Name: Main and only definition to create a series of augmented images.
 
 */* parameters
 
 Parameter name | Context
 ------------ | -------------
-path_to_importfolder| => #Folder with images that need to be augmented 
-path_to_exportfolder | #Folder where augmented images should be stored
-start_number |	=> #Starting number for image output. Change to something else than 0 if you would perform Data Augmentation multiple times in the same folder.
-repeat_variable | => #How many times the same image needs to be augmented. For ex.: 101 sample pictures will result into 2020 pictures, if repeat_variable is  set to 20.
+path_to_importfolder| Folder with images that need to be augmented 
+path_to_exportfolder | Folder where augmented images should be stored
+start_number | #Starting number for image output. Change to something else than 0 if you would perform Data Augmentation multiple times in the same folder.
+repeat_variable | How many times the same image needs to be augmented. For ex.: 101 sample pictures will result into 2020 pictures, if repeat_variable is  set to 20.
 	Attention: no return variable(s) exist for this function!
 ##### Debug options
 * No debug options provided
@@ -148,10 +148,10 @@ repeat_variable | => #How many times the same image needs to be augmented. For e
 */* definitions
 Definition name | Context
 ------------ | -------------
-def calculate_imagecount |	# Name: Counts the amount of images inside the 'sample_images'-folder.
-def test_accuracy |	# Name: For each image in the 'sample_images'-folder, it lets the cascade determine an object (if there is an object present). Then, it determines the color of the object and prints it on an image in the 'export_images' folder.
-"" | #Case: If no object is found, the image will be written in the 'export_images' folder as "IMGNAME+NO-OBJECT".
-"" | #Case:  If there is an object, the image will be written in in the 'export_images' folder as "IMGNAME", with the bounding box on the detected object printed on the same image. Also, a "IMGNAME+CUT" image will be written. This is a cut image of only the area that the bounding box covers.
+def calculate_imagecount | Name: Counts the amount of images inside the 'sample_images'-folder.
+def test_accuracy | Name: For each image in the 'sample_images'-folder, it lets the cascade determine an object (if there is an object present). Then, it determines the color of the object and prints it on an image in the 'export_images' folder.
+"" | Case: If no object is found, the image will be written in the 'export_images' folder as "IMGNAME+NO-OBJECT".
+"" | Case:  If there is an object, the image will be written in in the 'export_images' folder as "IMGNAME", with the bounding box on the detected object printed on the same image. Also, a "IMGNAME+CUT" image will be written. This is a cut image of only the area that the bounding box covers.
 
 */* parameters
 
