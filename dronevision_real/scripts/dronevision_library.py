@@ -302,7 +302,7 @@ def calculate_radialdistance_theta(x_between_centerandobject, y_between_centeran
 
 
 # Main definition of the object-detection script. Main goal is to return bools and await direction completions (async def's) from drone script.
-def visual_algorithm(scantime, safezonesize, desiredcolor, debug):
+def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
     # Create empty lists for x and y coördinates
     np_list_x = list()
     np_list_y = list()
@@ -310,11 +310,19 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug):
     cross_cascade = cv2.CascadeClassifier('../src/cascade/cascade.xml')
     # Define a start time
     start_time = datetime.datetime.now()
-    # Initialize capture of camera.
-    cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    # Initialize capture of camera or video; depends on what has been chosen.
+    if videosource == "":
+        cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    else:
+        try:
+            cap = cv2.VideoCapture(videosource)
+        except:
+            # If the capture couldn't initialize, webcam capture will be initialised anyways.
+            cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        debug = True
     cv2.namedWindow("img")
 
-    while 1:
+    while cap.isOpened():
         # Determines the size of the safezone.
         #   If this is set too big, this can cause the drone to not land properly on object, when object is small
         #   (f. ex. when side lenght of cross equals 20 cm)
@@ -329,7 +337,7 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug):
         while True:
             # Read the capture initialised above.
             ret, img = cap.read()
-            # Convert RBG image to RGB and apply medianBlur.
+            # apply medianBlur.
             blur = cv2.medianBlur(img, 3)
             # Get window width and height of image frame.
             window_width = cv2.getWindowImageRect("img")[2]
@@ -337,7 +345,7 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug):
             # Detect object, 'crosses'.
             crosses = cross_cascade.detectMultiScale(blur, 100, 100)
             if debug:
-                cv2.imshow('img', img)
+                cv2.imshow('img', blur)
                 cv2.circle(img, (int(window_width / 2), int(window_height / 2)), int((safezone / 2)), (255, 0, 255), 2)
 
             # For loop: 'for every cross being detected, do...'
@@ -360,6 +368,9 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug):
                 color = str(color_controller(img_cut, False))
                 if debug:
                     cv2.rectangle(img, (x, y), (x + w, y + h), (color_switch(color)), 5)
+                    r, g, b = color_switch(color)
+                    color_bgr = b, g, r
+                    cv2.putText(img, 'Color: ' + color, (int(x), int(y)), cv2.FONT_HERSHEY_PLAIN, 2, (color_bgr), 1, cv2.LINE_AA)
                     cv2.imshow('img', img)
                 if color == desiredcolor:
                     addtolist(center_x, np_list_x)
@@ -391,6 +402,7 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug):
                                                                             y_between_centerandobject)
                     # If debugging is enabled, directions for the drone to move will be displayed in order to know if the
                     # program functions correctly.
+                    current_time = datetime.datetime.now()
                     if debug:
                         print(theta)
                         if 0 < theta < 90:
