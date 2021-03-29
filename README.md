@@ -141,8 +141,7 @@ repeat_variable | => #How many times the same image needs to be augmented. For e
  
  &nbsp;
 ## 4. & 5.: Accuracy of haar-cascade model and color detection.
-&nbsp;
- 	NOTICE THAT THE RESULTS WILL BE STORED TO "../data/accuracy_results.txt"! This cannot be changed from the main method
+	NOTICE THAT THE RESULTS WILL BE STORED TO "../data/accuracy_results.txt"! This cannot be changed from the main method
 ##### Uses following libraries:
 * `<import cv2>`
 ##### Name of definition(s), input parameter(s) and return variable(s):
