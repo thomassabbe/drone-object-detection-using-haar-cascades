@@ -139,7 +139,7 @@ def color_histogram_of_test_image(debugparam, test_src_image):
             if debugparam:
                 print(feature_data)
 
-    with open('../src/color_recognition/test.data', 'w') as myfile:
+    with open('../data/color_recognition/test.data', 'w') as myfile:
         myfile.write(feature_data)
 
 
@@ -188,7 +188,7 @@ def color_histogram_of_training_image(img_name):
             red = str(elem)
             feature_data = red + ',' + green + ',' + blue
 
-    with open('../src/color_recognition/training.data', 'a') as myfile:
+    with open('../data/color_recognition/training.data', 'a') as myfile:
         myfile.write(feature_data + ',' + data_source + '\n')
 
 
@@ -226,7 +226,7 @@ def training():
 # Main (parent) definition that returns color based upon child definitions.
 def color_controller(source_image, debugparam):
     # checking whether the training data is ready
-    PATH = '../src/color_recognition/training.data'
+    PATH = '../data/color_recognition/training.data'
 
     if os.path.isfile(PATH) and os.access(PATH, os.R_OK):
         if debugparam:
@@ -234,14 +234,14 @@ def color_controller(source_image, debugparam):
     else:
         if debugparam:
             print('training data is being created...')
-        open('../src/color_recognition/training.data', 'w')
+        open('../data/color_recognition/training.data', 'w')
         training()
         if debugparam:
             print('training data is ready, classifier is loading...')
 
     # get the prediction
     color_histogram_of_test_image(debugparam, source_image)
-    prediction = knn_classifiermain('../src/color_recognition/training.data', '../src/color_recognition/test.data')
+    prediction = knn_classifiermain('../data/color_recognition/training.data', '../data/color_recognition/test.data')
 
     return prediction
 
@@ -307,7 +307,7 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
     np_list_x = list()
     np_list_y = list()
     # Add cross_cascade classifier.
-    cross_cascade = cv2.CascadeClassifier('../src/cascade/cascade.xml')
+    cross_cascade = cv2.CascadeClassifier('../data/cascade/cascade.xml')
     # Define a start time
     start_time = datetime.datetime.now()
     # Initialize capture of camera or video; depends on what has been chosen.
@@ -363,7 +363,7 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
                 # Call RGBController to check wheter the cross/object is Red, Blue or Green.
                 # This method will return 'red', 'blue' or 'green', in a text format.
                 try:
-                    os.remove('../src/color_recognition/test.data')
+                    os.remove('../data/color_recognition/test.data')
                 except:
                     pass
                 color = str(color_controller(img_cut, False))
