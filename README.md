@@ -13,7 +13,7 @@ Disclaimer: some of the functions inside this repo have options to debug. This c
 If you wish to see a practical tutorial, please visit [this link](https://youtu.be/_pKXK4r-oxs)
 
 # Content of this repository, in correct order of dronevision_library.py:
-  1. Color detection: Determine the color of an object using color clustering.
+  1. Color detection: Determine the color of an object using the KNN algorithm.
   2. Drone Vision: Given two parameters (scantime and desired color), return a pixel-distance between drone and object, which has been detected with a cascade model. 
   3. Data augmentation: Augment positive images (images with desired object) to create a larger dataset.
   4. Test accuracy of a haar-cascade model (generated with OpenCV 'train cascade'; see [documentation](https://github.com/thomassabbe/drone-object-detection-using-haar-cascades/wiki/Haar-cascade-training)) 
