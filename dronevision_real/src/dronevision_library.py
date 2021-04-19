@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 # -------------------------------------------------------------------------
 # --- Author         : Thomas Sabbe
 # --- Mail           : thomas.sabbe@student.kuleuven.be
@@ -25,17 +25,37 @@ from torchvision.utils import save_image
 
 
 ######COLORDETECTION######
-# Used by 'k_nearest_neighbors' to determine the nearest distance between two positions (pixel-coördinates).
 def calculate_euclideandistance(variable1, variable2, length):
+    """
+    Used by 'k_nearest_neighbors' to determine the nearest distance between two positions (pixel-coördinates).
+
+    Keyword arguments:
+    variable1 -- First coördinate
+    variable2 -- Second coördinate
+    length -- Amount of clusters in test-instance image.
+
+    Return variables:
+    distance (int, DEFAULT 0)
+    """
     distance = 0
     for x in range(length):
         distance += pow(variable1[x] - variable2[x], 2)
     return math.sqrt(distance)
 
 
-# Returns the k-amount nearest neighbors (and their distance) around the color value of the test-image. If k is set to '3',
-# three possible clusters that are close to the value of the test-image will be returned, in an array.
 def k_nearest_neighbors(training_feature_vector, testInstance, k):
+    """
+    Returns the k-amount nearest neighbors (and their distance) around the color value of the test-image. If k is set to '3',
+    three possible clusters that are close to the value of the test-image will be returned, in an array.
+
+    Keyword arguments:
+    training_feature_vector -- vector file of the test image
+    testInstance -- specific value at position 'x' in the training dataset array
+    k -- K-Means amount of clusters
+
+    Return variables:
+    neighbors (int, DEFAULT 0)
+    """
     distances = []
     length = len(testInstance)
     for x in range(len(training_feature_vector)):
@@ -49,10 +69,18 @@ def k_nearest_neighbors(training_feature_vector, testInstance, k):
     return neighbors
 
 
-# Returns the amount votes of each neighbour around the color, presented in the test-image.
-# This definition is called by 'knn_classifiermain', but uses argument 'neighbors' from 'k_nearest_neighbors'
-# (in order to count the nearest neighbors, ofcourse...)
 def response_of_neighbors(neighbors):
+    """
+    Returns the amount votes of each neighbour around the color, presented in the test-image.
+    This definition is called by 'knn_classifiermain', but uses argument 'neighbors' from 'k_nearest_neighbors'
+    (in order to count the nearest neighbors, ofcourse...)
+
+    Keyword arguments:
+    neighbors -- amount of neighbors around the test feature cluster centroid
+
+    Return variables:
+    sortedVotes[0][0] (int, DEFAULT 0)
+    """
     all_possible_neighbors = {}
     for x in range(len(neighbors)):
         response = neighbors[x][-1]
@@ -65,14 +93,20 @@ def response_of_neighbors(neighbors):
     return sortedVotes[0][0]
 
 
-# Converts the test.data and training.data files to .csv vector files,
-# in order to create training feature vectors and a test feature vector.
-def load_dataset(
-        filename,
-        filename2,
-        training_feature_vector=[],
-        test_feature_vector=[],
-):
+def load_dataset(filename, filename2, training_feature_vector=[], test_feature_vector=[]):
+    """
+    Converts the test.data and training.data files to .csv vector files,
+    in order to load training feature vectors and a test feature vector.
+
+    Keyword arguments:
+    filename -- training .csv file
+    filename2 -- test_feature .csv file
+    training_feature_vector=[] -- empty array for training_feature_vector data
+    test_feature_vector=[] -- empty array for test_feature_vector data
+
+    Return variables:
+    none
+    """
     with open(filename) as csvfile:
         lines = csv.reader(csvfile)
         dataset = list(lines)
@@ -90,9 +124,18 @@ def load_dataset(
             test_feature_vector.append(dataset[x])
 
 
-# Main definition for returning a prediction of the model to 'color_controller'.
-# Uses both test.data and training.data files created in the other definitions, if they didn't exist yet.
 def knn_classifiermain(training_data, test_data):
+    """
+    Main definition for returning a prediction of the model to 'color_controller'.
+    Uses both test.data and training.data files created in the other definitions, if they didn't exist yet.
+
+    Keyword arguments:
+    training_data -- training.data file
+    test_data -- test.data file
+
+    Return variables:
+    classifier_prediction[0] (string, DEFAULT "Color wasn't found due to an error")
+    """
     training_feature_vector = []  # training feature vector
     test_feature_vector = []  # test feature vector
     load_dataset(training_data, test_data, training_feature_vector, test_feature_vector)
@@ -107,11 +150,19 @@ def knn_classifiermain(training_data, test_data):
     except:
         return "Color wasn't found due to an error"
 
-    # Creates a .data file that contains color-cluster data.
 
-
-# This color data is extracted from a test image that is presented to the training.data model/file.
 def color_histogram_of_test_image(debugparam, test_src_image):
+    """
+    Creates a .data file that contains color-cluster data.
+    This color data is extracted from a test image that is presented to the training.data model/file.
+
+    Keyword arguments:
+    debugparam -- bool operator that enables text output when debugging is enabled
+    test_src_image -- image that's been imported, in array format
+
+    Return variables:
+    none
+    """
     # load the image
     image = test_src_image
 
@@ -143,8 +194,16 @@ def color_histogram_of_test_image(debugparam, test_src_image):
         myfile.write(feature_data)
 
 
-# Creates a .data file that contains color-cluster data. This definition is called by 'training'.
 def color_histogram_of_training_image(img_name):
+    """
+    Creates a .data training file that contains color-cluster data. This definition is called by 'training'.
+
+    Keyword arguments:
+    img_name -- image file from the training data collection
+
+    Return variables:
+    none
+    """
     # detect image color by using image file name to label training data
     if 'red' in img_name:
         data_source = 'red'
@@ -192,8 +251,16 @@ def color_histogram_of_training_image(img_name):
         myfile.write(feature_data + ',' + data_source + '\n')
 
 
-# For every training-image, 'color_histogram_of_training_image' is called to create a histogram for the colors.
 def training():
+    """
+    For every training-image, 'color_histogram_of_training_image' is called to create a histogram for the colors.
+
+    Keyword arguments:
+    none
+
+    Return variables:
+    none
+    """
     # red color training images
     for f in os.listdir('../data/training_dataset/red'):
         color_histogram_of_training_image('../data/training_dataset/red/' + f)
@@ -223,8 +290,17 @@ def training():
         color_histogram_of_training_image('../data/training_dataset/blue/' + f)
 
 
-# Main (parent) definition that returns color based upon child definitions.
 def color_controller(source_image, debugparam):
+    """
+    Main (parent) definition that returns color based upon child definitions.
+
+    Keyword arguments:
+    source_image -- test image source (array)
+    debugparam -- bool operator that enables text output when debugging is enabled
+
+    Return variables:
+    prediction (string, DEFAULT "Color wasn't found due to an error")
+    """
     # checking whether the training data is ready
     PATH = '../data/color_recognition/training.data'
 
@@ -252,18 +328,43 @@ def color_controller(source_image, debugparam):
 ######OBJECT DETECTION WITH HAAR CASCADE######
 
 
-# Definition to determine an average of a list.
 def average(lst):
+    """
+    Definition to determine an average of a list.
+
+    Keyword arguments:
+    lst - list with integers to determine the average
+
+    Return variables:
+    sum(lst) / len(lst) (int, DEFAULT 0)
+    """
     return sum(lst) / len(lst)
 
 
-# Defintion to add a variable to a list.
 def addtolist(integer, lst):
+    """
+    Defintion to add a variable to a list.
+
+    Keyword arguments:
+    integer -- integer which needs to be appended to the list lst
+    lst -- target list to append the integer to
+
+    Return variables:
+    none
+    """
     lst.append(integer)
 
 
-# Color switch for bounding box color, in case debugging is enabled.
 def color_switch(color):
+    """
+    Color switch for bounding box color, in case debugging is enabled.
+
+    Keyword arguments:
+    color -- color, in string format
+
+    Return variables:
+    integer, integer, integer (int, int, int; DEFAULT 0,0,0)
+    """
     if color == "white":
         return 255, 255, 255
     elif color == "black":
@@ -280,8 +381,17 @@ def color_switch(color):
         return 28, 234, 34
 
 
-# Calculate euclidian distance and theta, given a safezone and distance between camera and object.
 def calculate_radialdistance_theta(x_between_centerandobject, y_between_centerandobject):
+    """
+    Calculate euclidian distance and theta, given a safezone and distance between camera and object.
+
+    Keyword arguments:
+    x_between_centerandobject -- horizontal distance between object and center camera frame
+    y_between_centerandobject -- vertical distance between object and center camera frame
+
+    Return variables:
+    theta, radial_distance (int, int; DEFAULT 0, 0)
+    """
     radial_distance = sqrt((x_between_centerandobject * x_between_centerandobject) + (
             y_between_centerandobject * y_between_centerandobject))
     # If structures to correctly determine the angle where the object is positioned.
@@ -301,8 +411,20 @@ def calculate_radialdistance_theta(x_between_centerandobject, y_between_centeran
         return theta, radial_distance
 
 
-# Main definition of the object-detection script. Main goal is to return bools and await direction completions (async def's) from drone script.
 def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
+    """
+    Main definition of the object-detection script. Main goal is to return bools and await direction completions (async def's) from drone script.
+
+    Keyword arguments:
+    scantime -- time to collect object positions before returning it
+    safezonesize -- debug parameter to know how when an object is close to the center camera frame
+    desiredcolor -- color (string) that needs to be detected
+    debugparam -- bool operator that enables text output when debugging is enabled
+    videosource -- source of video input
+
+    Return variables:
+    theta, radial_distance (int, int; DEFAULT 0, 0)
+    """
     # Create empty lists for x and y coördinates
     np_list_x = list()
     np_list_y = list()
@@ -442,8 +564,19 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
 
 ######DATA AUGMENTATION######
 
-# Main definition to create the transformations and store them.
 def create_transformation(path_to_importfolder, path_to_exportfolder, start_number, repeat_variable):
+    """
+    Main definition to create the transformations and store them.
+
+    Keyword arguments:
+    path_to_importfolder -- path to the import folder
+    path_to_exportfolder -- path to the export folder
+    start_number -- start number for writing images to the export folder
+    repeat_variable -- amount of times an augment needs to be created from the same image
+
+    Return variables:
+    none
+    """
     # Create a collection of transformations. The choices which tranformations are arbitrary.
     my_transforms = transforms.Compose([
         transforms.Resize((256, 256)),
@@ -474,16 +607,34 @@ def create_transformation(path_to_importfolder, path_to_exportfolder, start_numb
 
 ######BEGIN OF TESTING CASCADE ACCURACY######
 
-# Calculate the number of files in a folder.
 def calculate_imagecount(Foldername):
+    """
+    Calculate the number of files in a folder.
+
+    Keyword arguments:
+    Foldername -- Folder where images are stored.
+
+    Return variables:
+    len(image_list) (default (0))
+    """
     image_list = []
     for filename in os.listdir(Foldername):
         image_list.append(filename)
     return len(image_list)
 
 
-# Main definition to test the accuracy of a haar-cascade model and/or the color detection algorithm
 def test_accuracy(sample_images, export_images, boolcolor):
+    """
+    Main definition to test the accuracy of a haar-cascade model and/or the color detection algorithm
+
+    Keyword arguments:
+    sample_images -- sample images folder filepath
+    export_images -- export images folder filepath
+    boolcolor -- wheter the color should be detected and printed on the image or not (bool variable)
+
+    Return variables:
+    none
+    """
     # Create text document for result data:
     f = open("../accuracy_results.txt", "w+")
     # Create Image list with succesful image detections:
