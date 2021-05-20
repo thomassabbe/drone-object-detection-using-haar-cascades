@@ -11,6 +11,7 @@
 
 # For color and object detection:
 import csv
+import time
 import datetime
 import os
 from math import sqrt
@@ -21,6 +22,9 @@ import operator
 import numpy as np
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
+from matplotlib import pyplot as plt
+
+from matplotlib import colors
 from torchvision.utils import save_image
 
 
@@ -140,7 +144,7 @@ def knn_classifiermain(training_data, test_data):
     test_feature_vector = []  # test feature vector
     load_dataset(training_data, test_data, training_feature_vector, test_feature_vector)
     classifier_prediction = []  # predictions
-    k = 3  # K value of k nearest neighbor
+    k = 5  # K value of k nearest neighbor
     for x in range(len(test_feature_vector)):
         neighbors = k_nearest_neighbors(training_feature_vector, test_feature_vector[x], k)
         result = response_of_neighbors(neighbors)
@@ -290,7 +294,7 @@ def training():
         color_histogram_of_training_image('../data/training_dataset/blue/' + f)
 
 
-def color_controller(source_image, debugparam):
+def color_controller(source_image, debugparam, debugcolor, print_test_and_training):
     """
     Main (parent) definition that returns color based upon child definitions.
 
@@ -318,10 +322,116 @@ def color_controller(source_image, debugparam):
     # get the prediction
     color_histogram_of_test_image(debugparam, source_image)
     prediction = knn_classifiermain('../data/color_recognition/training.data', '../data/color_recognition/test.data')
-
+    if debugparam:
+        print('Also plotting the color of test image in ' + debugcolor + 'spectrum ')
+        plotcolor(source_image, debugcolor)
+    if print_test_and_training:
+        print('Also generating a plot of training and test data in a 3D (HSV!) plot.')
+        plot_test_and_training_data()
     return prediction
 
 
+def rgb_to_hsv(r, g, b):
+    """
+        Simple conversion definition to convert RGB values to HSV values.
+
+        Keyword arguments:
+        r, g, b -- RGB color value
+
+        Return variables:
+        h, s, v -- color values in HSV color spectrum
+        """
+    #For each line in .data file, print the color
+    r = float(r)
+    g = float(g)
+    b = float(b)
+    r, g, b = r/255.0, g/255.0, b/255.0
+    mx = max(r, g, b)
+    mn = min(r, g, b)
+    df = mx-mn
+    if mx == mn:
+        h = 0
+    elif mx == r:
+        h = (60 * ((g-b)/df) + 360) % 360
+    elif mx == g:
+        h = (60 * ((b-r)/df) + 120) % 360
+    elif mx == b:
+        h = (60 * ((r-g)/df) + 240) % 360
+    if mx == 0:
+        s = 0
+    else:
+        s = (df/mx)*100
+    v = mx*100
+    return h, s, v
+
+
+def plot_test_and_training_data():
+    """
+    Calculate the number of files in a folder.
+
+    Keyword arguments:
+    Foldername -- Folder where images are stored.
+
+    Return variables:
+    len(image_list) (default (0))
+    """
+    fig = plt.figure()
+    axis = fig.add_subplot(1, 1, 1, projection="3d")
+    f = open("../data/color_recognition/training.data", "r")
+    for line in f:
+        r, g, b, color = line.split(',')
+        h, s, v = rgb_to_hsv(r, g, b)
+        colorstring = color.replace("\n", "")
+        axis.scatter(h, s, v, facecolors=colorstring, alpha=0.125,  marker=".")
+    f = open("../data/color_recognition/test.data", "r")
+    for line in f:
+        r, g, b = line.split(',')
+        h, s, v = rgb_to_hsv(r, g, b)
+        b = b.replace("\n", "")
+        axis.scatter(h, s, v, facecolors='magenta', marker='D', edgecolors='magenta', linewidths=3)
+    axis.set_xlabel("Hue")
+    axis.set_ylabel("Saturation")
+    axis.set_zlabel("Value")
+    plt.show()
+
+
+def plotcolor(image, color_space):
+    # Source: https://realpython.com/python-opencv-color-spaces/
+    """
+    Plot every pixel its color value in an 3D plot. There's the option between HSV and RGB.
+
+    Keyword arguments:
+    image -- Image that needs to be plotted.
+    color_space -- "RGB" or "HSV"
+
+    Return variables:
+    len(image_list) (default (0))
+    """
+    pixel_colors = image.reshape((np.shape(image)[0] * np.shape(image)[1], 3))
+    norm = colors.Normalize(vmin=-1., vmax=1.)
+    norm.autoscale(pixel_colors)
+    pixel_colors = norm(pixel_colors).tolist()
+    if color_space == "RGB":
+        r, g, b = cv2.split(image)
+        fig = plt.figure()
+        axis = fig.add_subplot(1, 1, 1, projection="3d")
+
+        axis.scatter(r.flatten(), g.flatten(), b.flatten(), facecolors=pixel_colors, marker=".")
+        axis.set_xlabel("Red")
+        axis.set_ylabel("Green")
+        axis.set_zlabel("Blue")
+        plt.show()
+    if color_space == "HSV":
+        hsv_image = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+        h, s, v = cv2.split(hsv_image)
+        fig = plt.figure()
+        axis = fig.add_subplot(1, 1, 1, projection="3d")
+
+        axis.scatter(h.flatten(), s.flatten(), v.flatten(), facecolors=pixel_colors, marker=".")
+        axis.set_xlabel("Hue")
+        axis.set_ylabel("Saturation")
+        axis.set_zlabel("Value")
+        plt.show()
 ######END OF COLORDETECTION######
 
 
@@ -357,7 +467,7 @@ def addtolist(integer, lst):
 
 def color_switch(color):
     """
-    Color switch for bounding box color, in case debugging is enabled.
+    Rgb color switch for bounding box color, in case debugging is enabled.
 
     Keyword arguments:
     color -- color, in string format
@@ -428,6 +538,8 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
     # Create empty lists for x and y coördinates
     np_list_x = list()
     np_list_y = list()
+    #Wait 'scantime' second upon first run (otherwise image assertion fail
+    time.sleep(scantime)
     # Add cross_cascade classifier.
     cross_cascade = cv2.CascadeClassifier('../data/cascade/cascade.xml')
     # Define a start time
@@ -440,7 +552,7 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
             cap = cv2.VideoCapture(videosource)
         except:
             # If the capture couldn't initialize, webcam capture will be initialised anyways.
-            cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+            cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
         debug = True
     cv2.namedWindow("img")
 
@@ -461,12 +573,14 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
             ret, img = cap.read()
             # apply medianBlur.
             blur = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            #
             #cv2.medianBlur(img, 3)
             # Get window width and height of image frame.
             window_width = cv2.getWindowImageRect("img")[2]
             window_height = cv2.getWindowImageRect("img")[3]
-            # Detect object, 'crosses'.
-            crosses = cross_cascade.detectMultiScale(blur, 100, 100)
+            # Detect object, 'crosses'. Tweak the parameters here to have fewer/more detections.
+            # E.g.: putting 25 (min Neighbors) to a higher value will result in fewer detections.
+            crosses = cross_cascade.detectMultiScale(blur, 1.3, 25, 100)
             if debug:
                 cv2.imshow('img', img)
                 cv2.circle(img, (int(window_width / 2), int(window_height / 2)), int((safezone / 2)), (255, 0, 255), 2)
@@ -477,18 +591,19 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
                 center_x = x + (w / 2)
                 center_y = y + (h / 2)
                 # Cut the existing image to get a piece of the color of the cross.
-                img_cut = img[int(center_y - w): int(w + center_y),
-                          int(center_x - w):int(
-                              w + center_x)]
-
-                img_cut = cv2.cvtColor(img_cut, cv2.COLOR_BGR2RGB)
+                img_cut = img[int(center_y - 25): int(25 + center_y),
+                          int(center_x - 25):int(
+                              25 + center_x)]
                 # Call RGBController to check wheter the cross/object is Red, Blue or Green.
                 # This method will return 'red', 'blue' or 'green', in a text format.
                 try:
                     os.remove('../data/color_recognition/test.data')
                 except:
                     pass
-                color = str(color_controller(img_cut, False))
+                try:
+                    color = str(color_controller(img_cut, False))
+                except:
+                    pass
                 if debug:
                     r, g, b = color_switch(color)
                     color_bgr = b, g, r
@@ -496,8 +611,11 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
                     cv2.putText(img, 'Color: ' + color, (int(x), int(y)), cv2.FONT_HERSHEY_PLAIN, 2, (color_bgr), 1, cv2.LINE_AA)
                     cv2.imshow('img', img)
                 if color == desiredcolor:
-                    addtolist(center_x, np_list_x)
-                    addtolist(center_y, np_list_y)
+                    try:
+                        addtolist(center_x, np_list_x)
+                        addtolist(center_y, np_list_y)
+                    except:
+                        pass
                     foundcorrectcross = True
                 if color != desiredcolor:
                     if debug:
@@ -511,8 +629,11 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
                 #   Otherwise, the program continues scanning for more crosses and adds them to the list.
                 if elapsed_time > seconds:
                     # Determine average position of all crosses added to the list:
-                    av_x = average(np_list_x)
-                    av_y = average(np_list_y)
+                    try:
+                        av_x = average(np_list_x)
+                        av_y = average(np_list_y)
+                    except:
+                        pass
                     # Clear the list off coördinates from previous for loop. These aren't needed anymore because
                     #   the average was just taken.
                     np_list_x.clear()
@@ -579,8 +700,8 @@ def create_transformation(path_to_importfolder, path_to_exportfolder, start_numb
     """
     # Create a collection of transformations. The choices which tranformations are arbitrary.
     my_transforms = transforms.Compose([
-        transforms.Resize((256, 256)),
-        transforms.RandomCrop((224, 224)),
+        transforms.Resize((500, 500)),
+        transforms.RandomCrop((500, 500)),
         transforms.ColorJitter(brightness=0.5, hue=0.5, saturation=0.5),
         transforms.RandomRotation(degrees=45),
         transforms.RandomHorizontalFlip(p=0.5),
@@ -641,7 +762,7 @@ def test_accuracy(sample_images, export_images, boolcolor):
     image_list_succesful_color = []
     countlistimages = 0
     seconds = datetime.timedelta(seconds=1)
-    cross_cascade = cv2.CascadeClassifier('../src/cascade/cascade.xml')
+    cross_cascade = cv2.CascadeClassifier('../data/cascade/cascade.xml')
     active = False
     for filename in os.listdir(sample_images):
         try:
@@ -655,7 +776,7 @@ def test_accuracy(sample_images, export_images, boolcolor):
             an_array = np.asarray(gray_uncontrast)
             multiplied_array = an_array * 1
             gray = multiplied_array
-            crosses = cross_cascade.detectMultiScale(gray, 100, 100)
+            crosses = cross_cascade.detectMultiScale(gray, 1.3, 50, 100)
             for (x, y, w, h) in crosses:
                 count = 0
                 # Get center of a cross which had been detected.
