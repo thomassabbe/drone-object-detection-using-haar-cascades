@@ -47,6 +47,9 @@ For cascade and color accuracy | N.A.
 * `<import csv>`
 `<import operator>`
 `<import os>`
+`<from matplotlib import pyplot as plt>`
+`<from matplotlib import colors>`
+`<import os>`
 
 ##### Name of definition(s), input parameter(s) and return variable(s):
 */* definitions
@@ -95,6 +98,8 @@ print_test_and_training | _Source_: Prints a 3D plot of the HSV value of the obs
 `<from math import sqrt>`
 `<import math>`
 `<import cv2>`
+`<import operator>`
+`<import time>`
 
 ##### Name of definition(s), input parameter(s) and return variable(s):
 */* definitions
