@@ -8,6 +8,7 @@ Mail | thomas.sabbe@student.kuleuven.be
 Date | 25/03/2021
  -------------------------------------------------------------------------
 Welcome to the repository of object detection using haar cascades.
+![example-image_](https://user-images.githubusercontent.com/39916843/119021647-f5d13800-b99f-11eb-9f5c-f7175a9d0462.png)
 
 Disclaimer: some of the functions inside this repo have options to debug. This contains text output and/or visual output. This is not implemented in this README-file, but can be found when opening 'main.py'.
 If you wish to see a practical tutorial, please visit [this link](https://youtu.be/_pKXK4r-oxs)
