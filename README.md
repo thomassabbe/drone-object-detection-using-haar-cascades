@@ -65,16 +65,25 @@ def load_dataset | _Name_: Converts the test.data and training.data files to .cs
 def response_of_neighbors | _Name_: Returns the amount votes of each neighbor around the color, presented in the test-image. This definition is called by 'knn_classifiermain', but uses argument 'neighbors' from 'k_nearest_neighbors' (in order to count the nearest neighbors, ofcourse...)
 def k_nearest_neighbors | _Name_: Returns the k-amount nearest neighbors (and their distance) around the color value of the test-image. If k is set to '3', three possible clusters that are close to the value of the test-image will be returned, in an array.
 def calculate_euclideandistance | _Name_: Used by 'k_nearest_neighbors' to determine the nearest distance between two positions (pixel-coördinates).
-
+def rgb_to_hsv | _Name_: Used by a definition used in the accuracy test to convert RGB values to HSV, in order to have a better understanding of the result.
+def plot_test_and_training_data | _Name_: Plots test and training data together, to have a better understanding of the KNN algorithm how a color is assigned.
+def plotcolor | _Name_: Plots every pixel its color of an image in the desired color spectrum. There's a choice between 'HSV' as argument or 'RGB'
 */* parameters necessary to use function
 
 Parameter name | Context
 ------------ | -------------
 source_image | _Source_: image needed for color_controller definition. This is the only parameter of the whole 'color detection'-section.
+debugparam   | _Source_: Parameter that determines whether there should be text output during the color detection process.
+debugcolor   | _Source_: Choose between HSV or RGB here to display a plot after color detection. Only active when debugparam = True. Has to be a string ("...")
+print_test_and_training | _Source_: Prints a 3D plot of the HSV value of the observed picture inside the clusters of the training dataset.
 ##### Example to determine the color of an image of an object, as displayed in main.py:
-* `<color_controller(image.png)>` 		_image.png_ : the image where the color needs to be determined.
+* `<color_controller(image.png, True, "HSV", True)>` 		_image.png_ : the image where the color needs to be determined.
+* 							_True_ : Will enable text output if the training dataset needs to be trained or not.
+* 							_HSV_ : The desired color spectrum (HSV or RGB)
+* 							_True_ : Will generate a 3D plot of the clustered test image its HSV value, together with the training cluster (HSV *  									values).
 ##### Debug options
 * There is an option to enable text output to display if the .data-files need to be generated or not.
+* There is also the option to enable a color plot of the training datacluster, with the value of the color of the test image plotted in the same 3D plot.
  
  &nbsp;
 ## 2. Drone Vision 
