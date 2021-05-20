@@ -22,6 +22,7 @@ If you wish to see a practical tutorial, please visit [this link](https://youtu.
  
 # How do I install and run the repository?
 
+In order to obtain the best results, clone the whole repository with all its subfolders!
 1. Clone the repository to your desired location.
 1. Open the 'real' directory with PyCharm or any Python IDE.
 1. Make sure following files are present and in the correct folder:
