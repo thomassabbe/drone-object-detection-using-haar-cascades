@@ -82,9 +82,9 @@ debugcolor   | _Source_: Choose between HSV or RGB here to display a plot after 
 print_test_and_training | _Source_: Prints a 3D plot of the HSV value of the observed picture inside the clusters of the training dataset.
 ##### Example to determine the color of an image of an object, as displayed in main.py:
 * `<color_controller(image.png, True, "HSV", True)>` 		_image.png_ : the image where the color needs to be determined.
-* 							_True_ : Will enable text output if the training dataset needs to be trained or not.
-* 							_HSV_ : The desired color spectrum (HSV or RGB)
-* 							_True_ : Will generate a 3D plot of the clustered test image its HSV value, together with the training cluster (HSV *  									values).
+* _True_ : Will enable text output if the training dataset needs to be trained or not.
+* _HSV_ : The desired color spectrum (HSV or RGB)
+* _True_ : Will generate a 3D plot of the clustered test image its HSV value, together with the training cluster (HSV *  									values).
 ##### Debug options
 * There is an option to enable text output to display if the .data-files need to be generated or not.
 * There is also the option to enable a color plot of the training datacluster, with the value of the color of the test image plotted in the same 3D plot.
