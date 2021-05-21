@@ -11,9 +11,9 @@ def object_detection():
     scantime = 0  # Time that the function will scan before returning an output.
     safezonesize = 0  # DEBUG PARAMETER! Will not be used if you do not wish to debug.
     desiredcolor = "white"  # Color of object that should be detected. For example "white". Visit README.md for available options.
-    debug = False  # This will enable debugging output, such as text in the runtime environment.
+    debug = False  # This will enable debugging output, such as text in the runtime environment. Putting to 'False' will only generate one result!
     videosource = ''  # Determine the video source (video-file). If no input, or the video file could not be opened, camera capture will initialize.
     # Syntax for videosource: '../folder/videosource.avi' Careful, please enable debugging while choosing a video file!
     # Attention! Debugging will enable a infinite loop of output, and no variables will be returned! (or until the video is finished)
     radialdistance, theta = visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource)
-    print(radialdistance, theta)  # Remove this if you don't want the output to be displayed (non-debug mode)
+    print(radialdistance, theta)  # Remove this if you don't want the output to be displayed (only applicable for non-debug mode)
