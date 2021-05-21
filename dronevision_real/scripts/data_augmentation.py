@@ -10,6 +10,8 @@ from dronevision_library import create_transformation
     # Please adjust these parameters before running the script:
     path_to_importfolder = 'PATH_TO_IMPORTFOLDER'  # Folder with images that need to be augmented,
     # format like: 'drive_letter:/folder/folder/' (don't forget '/' at the end)
+    # !!!IMPORTANT!!! Your sample images have to be in the subfolder of the folder you've chosen for sample_images.
+    # Otherwise, the script will generate an error saying it coudln't find any images.
     path_to_exportfolder = 'PATH_TO_EXPORTFOLDER'  # Folder where augmented images should be stored,
     # format like: 'drive_letter:/folder/folder/' (don't forget '/' at the end)
     start_number = 0  # Starting number for image output. Change to something else than 0 if you would perform Data Augmentation multiple times in the same folder.
