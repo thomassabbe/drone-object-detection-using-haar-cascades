@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # -------------------------------------------------------------------------
 # --- Author         : Thomas Sabbe
 # --- Mail           : thomas.sabbe@student.kuleuven.be
@@ -18,13 +18,12 @@ from math import sqrt
 import math
 import cv2
 import operator
+from matplotlib import pyplot as plt
+from matplotlib import colors
 # For data-augmentation:
 import numpy as np
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
-from matplotlib import pyplot as plt
-
-from matplotlib import colors
 from torchvision.utils import save_image
 
 
@@ -155,7 +154,7 @@ def knn_classifiermain(training_data, test_data):
         return "Color wasn't found due to an error"
 
 
-def color_histogram_of_test_image(debugparam, test_src_image):
+def color_histogram_of_test_image(debugparam, test_src_image, debugcolor):
     """
     Creates a .data file that contains color-cluster data.
     This color data is extracted from a test image that is presented to the training.data model/file.
@@ -192,7 +191,9 @@ def color_histogram_of_test_image(debugparam, test_src_image):
             red = str(elem)
             feature_data = red + ',' + green + ',' + blue
             if debugparam:
-                print(feature_data)
+                if debugcolor == 'HSV':
+                    rgb_to_hsv(red, green, blue)
+                print('The image observed in your image has following '+debugcolor+ ' value: ' + feature_data)
 
     with open('../data/color_recognition/test.data', 'w') as myfile:
         myfile.write(feature_data)
@@ -320,10 +321,10 @@ def color_controller(source_image, debugparam, debugcolor, print_test_and_traini
             print('training data is ready, classifier is loading...')
 
     # get the prediction
-    color_histogram_of_test_image(debugparam, source_image)
+    color_histogram_of_test_image(debugparam, source_image, debugcolor)
     prediction = knn_classifiermain('../data/color_recognition/training.data', '../data/color_recognition/test.data')
     if debugparam:
-        print('Also plotting the color of test image in ' + debugcolor + 'spectrum ')
+        print('Also plotting the color of test image in ' + debugcolor + ' color spectrum ')
         plotcolor(source_image, debugcolor)
     if print_test_and_training:
         print('Also generating a plot of training and test data in a 3D (HSV!) plot.')
@@ -341,27 +342,27 @@ def rgb_to_hsv(r, g, b):
         Return variables:
         h, s, v -- color values in HSV color spectrum
         """
-    #For each line in .data file, print the color
+    # For each line in .data file, print the color
     r = float(r)
     g = float(g)
     b = float(b)
-    r, g, b = r/255.0, g/255.0, b/255.0
+    r, g, b = r / 255.0, g / 255.0, b / 255.0
     mx = max(r, g, b)
     mn = min(r, g, b)
-    df = mx-mn
+    df = mx - mn
     if mx == mn:
         h = 0
     elif mx == r:
-        h = (60 * ((g-b)/df) + 360) % 360
+        h = (60 * ((g - b) / df) + 360) % 360
     elif mx == g:
-        h = (60 * ((b-r)/df) + 120) % 360
+        h = (60 * ((b - r) / df) + 120) % 360
     elif mx == b:
-        h = (60 * ((r-g)/df) + 240) % 360
+        h = (60 * ((r - g) / df) + 240) % 360
     if mx == 0:
         s = 0
     else:
-        s = (df/mx)*100
-    v = mx*100
+        s = (df / mx) * 100
+    v = mx * 100
     return h, s, v
 
 
@@ -382,7 +383,7 @@ def plot_test_and_training_data():
         r, g, b, color = line.split(',')
         h, s, v = rgb_to_hsv(r, g, b)
         colorstring = color.replace("\n", "")
-        axis.scatter(h, s, v, facecolors=colorstring, alpha=0.125,  marker=".")
+        axis.scatter(h, s, v, facecolors=colorstring, alpha=0.125, marker=".")
     f = open("../data/color_recognition/test.data", "r")
     for line in f:
         r, g, b = line.split(',')
@@ -407,6 +408,7 @@ def plotcolor(image, color_space):
     Return variables:
     len(image_list) (default (0))
     """
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     pixel_colors = image.reshape((np.shape(image)[0] * np.shape(image)[1], 3))
     norm = colors.Normalize(vmin=-1., vmax=1.)
     norm.autoscale(pixel_colors)
@@ -432,6 +434,8 @@ def plotcolor(image, color_space):
         axis.set_ylabel("Saturation")
         axis.set_zlabel("Value")
         plt.show()
+
+
 ######END OF COLORDETECTION######
 
 
@@ -538,7 +542,7 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
     # Create empty lists for x and y coördinates
     np_list_x = list()
     np_list_y = list()
-    #Wait 'scantime' second upon first run (otherwise image assertion fail
+    # Wait 'scantime' second upon first run (otherwise image assertion fail
     time.sleep(scantime)
     # Add cross_cascade classifier.
     cross_cascade = cv2.CascadeClassifier('../data/cascade/cascade.xml')
@@ -571,10 +575,8 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
         while True:
             # Read the capture initialised above.
             ret, img = cap.read()
-            # apply medianBlur.
+            # apply grayscale.
             blur = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            #
-            #cv2.medianBlur(img, 3)
             # Get window width and height of image frame.
             window_width = cv2.getWindowImageRect("img")[2]
             window_height = cv2.getWindowImageRect("img")[3]
@@ -594,21 +596,23 @@ def visual_algorithm(scantime, safezonesize, desiredcolor, debug, videosource):
                 img_cut = img[int(center_y - 25): int(25 + center_y),
                           int(center_x - 25):int(
                               25 + center_x)]
-                # Call RGBController to check wheter the cross/object is Red, Blue or Green.
-                # This method will return 'red', 'blue' or 'green', in a text format.
                 try:
                     os.remove('../data/color_recognition/test.data')
                 except:
                     pass
                 try:
-                    color = str(color_controller(img_cut, False))
+                    color = str(color_controller(img_cut, False, 'black',
+                                                 False))  # The 'black' will be ignored, because debugging of color controller is not enabled in Object Detection.
                 except:
+                    color = str(color_controller(img_cut, False, 'black',
+                                                 False))  # The 'black' will be ignored, because debugging of color controller is not enabled in Object Detection.
                     pass
                 if debug:
                     r, g, b = color_switch(color)
                     color_bgr = b, g, r
                     cv2.rectangle(img, (x, y), (x + w, y + h), (color_bgr), 5)
-                    cv2.putText(img, 'Color: ' + color, (int(x), int(y)), cv2.FONT_HERSHEY_PLAIN, 2, (color_bgr), 1, cv2.LINE_AA)
+                    cv2.putText(img, 'Color: ' + color, (int(x), int(y)), cv2.FONT_HERSHEY_PLAIN, 2, (color_bgr), 1,
+                                cv2.LINE_AA)
                     cv2.imshow('img', img)
                 if color == desiredcolor:
                     try:
@@ -776,7 +780,7 @@ def test_accuracy(sample_images, export_images, boolcolor):
             an_array = np.asarray(gray_uncontrast)
             multiplied_array = an_array * 1
             gray = multiplied_array
-            crosses = cross_cascade.detectMultiScale(gray, 1.3, 50, 100)
+            crosses = cross_cascade.detectMultiScale(gray, 1.3, 25, 100)
             for (x, y, w, h) in crosses:
                 count = 0
                 # Get center of a cross which had been detected.
@@ -794,7 +798,7 @@ def test_accuracy(sample_images, export_images, boolcolor):
                 cv2.imwrite(export_images + str(filename) + 'CUT' + '.jpg', img_cut)
                 # img_cut = cv2.cvtColor(images, cv2.COLOR_BGR2HSV)
                 if boolcolor == True:
-                    color = str(color_controller(img_cut, False))
+                    color = str(color_controller(img_cut, False, 'black', False))
                 if active == False:
                     filename_drawn = img
                     r, g, b = color_switch(color)
